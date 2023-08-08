@@ -1,7 +1,7 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 import { json, LinkDescriptor, LoaderFunction } from "@remix-run/node";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
-import {get_env} from "./env.server";
+import { get_env } from "./env.server";
 
 export function links(): Array<LinkDescriptor> {
 	return [
