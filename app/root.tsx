@@ -1,6 +1,7 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinkDescriptor } from "@remix-run/node";
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import { json, LinkDescriptor, LoaderFunction } from "@remix-run/node";
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
+import {get_env} from "./env.server";
 
 export function links(): Array<LinkDescriptor> {
 	return [
@@ -8,7 +9,18 @@ export function links(): Array<LinkDescriptor> {
 	];
 }
 
+type LoaderData = {
+	ENV: ReturnType<typeof get_env>,
+};
+
+export var loader: LoaderFunction = async function (_) {
+	return json<LoaderData>({
+		ENV: get_env(),
+	});
+};
+
 function App() {
+	var data = useLoaderData();
 	return <html lang="en">
 		<head>
 			<meta charSet="utf-8" />
@@ -20,6 +32,9 @@ function App() {
 			<Outlet />
 			<ScrollRestoration />
 			<Scripts />
+			<script dangerouslySetInnerHTML={{
+				__html: `window.ENV = ${JSON.stringify(data.ENV)}`
+			}} />
 			<LiveReload />
 		</body>
 	</html>;
