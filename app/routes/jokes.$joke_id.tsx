@@ -1,3 +1,4 @@
+import {useLoaderData} from "@remix-run/react";
 import {LoaderFunction} from "react-router";
 
 export var loader: LoaderFunction = async function ({ params }) {
@@ -6,8 +7,9 @@ export var loader: LoaderFunction = async function ({ params }) {
 };
 
 function JokeIdRoute() {
+	var data = useLoaderData();
 	return <div>
-		<div>nothing yet.</div>
+		<div>{JSON.stringify(data)}</div>
 	</div>;
 }
 
