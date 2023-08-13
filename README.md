@@ -1,6 +1,11 @@
 ## Prisma commands
 
 ```sh
+npm install --save-dev prisma
+npm install @prisma/client
+```
+
+```sh
 npx prisma init --datasource-provider sqlite
 ```
 
@@ -34,7 +39,7 @@ cp -R ../my-old-remix-app/app app
 
 ## Deployment
 
-Make sure to deploy the output of `remix build`
+Make sure to deploy the output of `remix build`.
 
 - `build/`
 - `public/build/`
