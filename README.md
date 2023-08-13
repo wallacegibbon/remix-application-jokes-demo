@@ -1,3 +1,17 @@
+## Prisma commands
+
+```sh
+npx prisma init --datasource-provider sqlite
+```
+
+```sh
+npx prisma db push
+```
+
+```sh
+npx prisma db seed
+```
+
 ## Using Another Template
 
 When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over relevant code/assets from your current app to the new project that's pre-configured for your target server.
