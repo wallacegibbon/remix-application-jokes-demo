@@ -1,6 +1,12 @@
-import { json, LoaderFunction } from "@remix-run/node";
+import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import { db } from "~/util/db.server";
+
+import styles_url from "~/styles/jokes.css";
+
+export var links: LinksFunction = function () {
+	return [{ rel: "stylesheet", href: styles_url }];
+};
 
 type LoaderData = {
 	joke_list_items: Array<{ id: string, name: string }>,

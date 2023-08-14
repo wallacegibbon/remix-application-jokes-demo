@@ -1,13 +1,18 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
-import { json, LinkDescriptor, LoaderFunction } from "@remix-run/node";
+import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import { get_env } from "./env.server";
 
-export function links(): Array<LinkDescriptor> {
+import global_large_styles_url from "~/styles/global-large.css";
+import global_medium_styles_url from "~/styles/global-medium.css";
+import global_styles_url from "~/styles/global.css";
+
+export var links: LinksFunction = function () {
 	return [
-		...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+		{ rel: "stylesheet", href: global_styles_url },
+		{ rel: "stylesheet", href: global_medium_styles_url, media: "print, (min-width: 640px)" },
+		{ rel: "stylesheet", href: global_large_styles_url, media: "print, (min-width: 1024px)" },
 	];
-}
+};
 
 type LoaderData = {
 	ENV: ReturnType<typeof get_env>,
