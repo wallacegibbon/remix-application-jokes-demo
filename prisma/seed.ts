@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import {PrismaClient} from "@prisma/client";
 
 var db = new PrismaClient();
 
@@ -36,8 +36,8 @@ async function seed() {
 		},
 	});
 	await Promise.all(get_jokes().map(function (joke) {
-		var data = { jokester_id: kody.id, ...joke };
-		return db.joke.create({ data });
+		var data = {jokester_id: kody.id, ...joke};
+		return db.joke.create({data});
 	}));
 }
 

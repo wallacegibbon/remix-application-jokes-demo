@@ -13,7 +13,7 @@
 	--color-links-hover: hsl(var(--hs-links) 45%);
 	--color-border: hsl(128, 85%, 38%);
 	--color-invalid: hsl(356, 100%, 71%);
-	--gradient-background: radial-gradient(circle, rgba(152, 11, 238, 1) 0%, rgba(118, 15, 181, 1) 35%, rgba(58, 13, 85, 1) 100%);
+	/*--gradient-background: radial-gradient(circle, rgba(152, 11, 238, 1) 0%, rgba(118, 15, 181, 1) 35%, rgba(58, 13, 85, 1) 100%);*/
 	--font-body: -apple-system, "Segoe UI", Helvetica Neue, Helvetica, Roboto, Arial, sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji";
 	--font-display: baloo, var(--font-body);
 }

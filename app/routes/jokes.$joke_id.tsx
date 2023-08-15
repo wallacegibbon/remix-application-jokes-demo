@@ -7,6 +7,7 @@ export var loader: LoaderFunction = async function ({params}) {
 	var joke = await db.joke.findUnique({where: {id: params.joke_id}});
 	if (!joke)
 		throw new Error("joke not found");
+
 	return json<Joke>(joke);
 };
 
