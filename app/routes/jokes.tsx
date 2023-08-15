@@ -1,22 +1,22 @@
-import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import { db } from "~/util/db.server";
+import {json, LinksFunction, LoaderFunction} from "@remix-run/node";
+import {Link, Outlet, useLoaderData} from "@remix-run/react";
+import {db} from "~/util/db.server";
 
 import styles_url from "~/styles/jokes.css";
 
 export var links: LinksFunction = function () {
-	return [{ rel: "stylesheet", href: styles_url }];
+	return [{rel: "stylesheet", href: styles_url}];
 };
 
 type LoaderData = {
-	joke_list_items: Array<{ id: string, name: string }>,
+	joke_list_items: Array<{id: string, name: string}>,
 };
 
 export var loader: LoaderFunction = async function () {
 	return json<LoaderData>({
 		joke_list_items: await db.joke.findMany({
-			orderBy: { created_at: "desc" },
-			select: { id: true, name: true },
+			orderBy: {created_at: "desc"},
+			select: {id: true, name: true},
 			take: 5,
 		}),
 	});
@@ -42,7 +42,7 @@ function JokesRoute() {
 					<Link to=".">Get a random joke</Link>
 					<p>Here are a few more jokes to check out:</p>
 					<ul>
-						{data.joke_list_items.map(function ({ id, name }) {
+						{data.joke_list_items.map(function ({id, name}) {
 							return <li key={id}>{name}</li>;
 						})}
 					</ul>

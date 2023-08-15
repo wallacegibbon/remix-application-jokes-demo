@@ -1,6 +1,6 @@
-import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
-import { get_env } from "./env.server";
+import {json, LinksFunction, LoaderFunction} from "@remix-run/node";
+import {Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData} from "@remix-run/react";
+import {get_env} from "./env.server";
 
 import global_large_styles_url from "~/styles/global-large.css";
 import global_medium_styles_url from "~/styles/global-medium.css";
@@ -8,9 +8,9 @@ import global_styles_url from "~/styles/global.css";
 
 export var links: LinksFunction = function () {
 	return [
-		{ rel: "stylesheet", href: global_styles_url },
-		{ rel: "stylesheet", href: global_medium_styles_url, media: "print, (min-width: 640px)" },
-		{ rel: "stylesheet", href: global_large_styles_url, media: "print, (min-width: 1024px)" },
+		{rel: "stylesheet", href: global_styles_url},
+		{rel: "stylesheet", href: global_medium_styles_url, media: "print, (min-width: 640px)"},
+		{rel: "stylesheet", href: global_large_styles_url, media: "print, (min-width: 1024px)"},
 	];
 };
 
