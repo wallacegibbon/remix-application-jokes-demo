@@ -1,6 +1,7 @@
-import {json, LinksFunction, LoaderFunction} from "@remix-run/node";
-import {Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData} from "@remix-run/react";
+import {json, LinksFunction, LoaderFunction, V2_MetaFunction} from "@remix-run/node";
+import {isRouteErrorResponse, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError} from "@remix-run/react";
 import {get_env} from "./env.server";
+import type {PropsWithChildren} from "react";
 
 import global_large_styles_url from "~/styles/global-large.css";
 import global_medium_styles_url from "~/styles/global-medium.css";
@@ -14,6 +15,15 @@ export var links: LinksFunction = function () {
 	];
 };
 
+export var meta: V2_MetaFunction = function () {
+	var description = "Learn Remix and laugh at the same time!";
+	return [
+		{name: "description", content: description},
+		{name: "twitter:description", content: description},
+		{title: "Remix: So great, it's funny!"},
+	];
+};
+
 type LoaderData = {
 	ENV: ReturnType<typeof get_env>,
 };
@@ -24,26 +34,56 @@ export var loader: LoaderFunction = async function (_) {
 	});
 };
 
-function App() {
-	var data = useLoaderData();
+function Document({children, title}: PropsWithChildren<{title?: string}>) {
 	return <html lang="en">
 		<head>
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width,initial-scale=1" />
+			<meta name="keywords" content="Remix,jokes" />
+			<meta name="twitter:image" content="https://remix-jokes.lol/social.png" />
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:creator" content="@remix_run" />
+			<meta name="twitter:site" content="@remix_run" />
+			<meta name="twitter:title" content="Remix Jokes" />
 			<Meta />
+			{title && <title>{title}</title>}
 			<Links />
 		</head>
 		<body>
-			<Outlet />
-			<ScrollRestoration />
 			<Scripts />
-			<script dangerouslySetInnerHTML={{
-				__html: `window.ENV = ${JSON.stringify(data.ENV)}`
-			}} />
+			{children}
 			<LiveReload />
 		</body>
 	</html>;
 }
 
+function App() {
+	var data = useLoaderData();
+	return <Document>
+		<Outlet />
+		<ScrollRestoration />
+		<script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(data.ENV)}`}} />
+	</Document>;
+}
+
 export default App;
+
+export function ErrorBoundary() {
+	var error = useRouteError();
+
+	if (isRouteErrorResponse(error))
+		return <Document title={`${error.status} ${error.statusText}`}>
+			<div className="error-container">
+				<h1>{error.status} {error.statusText}</h1>
+			</div>
+		</Document>;
+
+	var error_message = error instanceof Error ? error.message : "unknown error";
+	return <Document title="Oops">
+		<div className="error-container">
+			<h1>App Error</h1>
+			<pre>{error_message}</pre>
+		</div>
+	</Document>;
+}
 

@@ -1,8 +1,17 @@
-import {ActionFunction, redirect} from "@remix-run/node";
-import {useActionData} from "@remix-run/react";
+import {ActionFunction, json, LoaderFunction, redirect} from "@remix-run/node";
+import {Form, isRouteErrorResponse, Link, useActionData, useNavigation, useRouteError} from "@remix-run/react";
+import {JokeDisplay} from "~/components/joke";
 import {db} from "~/util/db.server";
 import {bad_request} from "~/util/request.server";
-import {require_user_id} from "~/util/session.server";
+import {get_user_id, require_user_id} from "~/util/session.server";
+
+export var loader: LoaderFunction = async function ({request}) {
+	var user_id = await get_user_id(request);
+	if (!user_id)
+		throw new Response("Unauthorized", {status: 401});
+
+	return json({});
+};
 
 function validate_joke_content(content: string) {
 	if (content.length < 10) return "That joke is too short";
@@ -35,6 +44,15 @@ export var action: ActionFunction = async function ({request}) {
 
 function NewJokeRoute() {
 	var action_data = useActionData<typeof action>();
+	var navigation = useNavigation();
+
+	if (navigation.formData) {
+		var content = navigation.formData.get("content");
+		var name = navigation.formData.get("name");
+		if (typeof content === "string" && typeof name === "string" && !validate_joke_content(content) && !validate_joke_name(name))
+			return <JokeDisplay can_delete={false} is_owner={true} joke={{name, content}} />;
+	}
+
 	var form_content = <>
 		<div>
 			<label>
@@ -69,9 +87,23 @@ function NewJokeRoute() {
 	</>;
 	return <div>
 		<p>Add your own hilarious joke</p>
-		<form method="post">{form_content}</form>
+		<Form method="post">{form_content}</Form>
 	</div>;
 }
 
 export default NewJokeRoute;
+
+export function ErrorBoundary() {
+	var error = useRouteError();
+
+	if (isRouteErrorResponse(error))
+		return <div className="error-container">
+			<p>You must be logged in to create a joke.</p>
+			<Link to="/login">Login</Link>
+		</div>;
+
+	return <div className="error-container">
+		Something unexpected went wrong. Sorry about that.
+	</div>;
+}
 

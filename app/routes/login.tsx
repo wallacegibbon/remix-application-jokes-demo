@@ -1,5 +1,5 @@
-import {ActionFunction, LinksFunction} from "@remix-run/node";
-import {Link, useActionData, useSearchParams} from "@remix-run/react";
+import {ActionFunction, LinksFunction, V2_MetaFunction} from "@remix-run/node";
+import {Form, Link, useActionData, useSearchParams} from "@remix-run/react";
 import {db} from "~/util/db.server";
 import {bad_request} from "~/util/request.server";
 import styles_url from "~/styles/login.css";
@@ -10,12 +10,21 @@ export var links: LinksFunction = function () {
 	return [{rel: "stylesheet", href: styles_url}];
 };
 
+export var meta: V2_MetaFunction = function () {
+	var description = "Login to submit your own jokes to Remix Jokes!";
+	return [
+		{name: "description", content: description},
+		{name: "twitter:description", content: description},
+		{title: "Remix Jokes | Login"},
+	];
+};
+
 export var action: ActionFunction = async function ({request}) {
 	var form = await request.formData();
 	var login_type = form.get("login_type");
 	var password = form.get("password");
 	var username = form.get("username");
-	var redirect_to = validate_url((form.get("redirect_to") as string) || "/jokes");
+	var redirect_to = validate_url(form.get("redirect_to") as string);
 	if (typeof login_type !== "string" || typeof password !== "string" || typeof username !== "string")
 		return bad_request({field_errors: null, fields: null, form_error: null});
 
@@ -37,6 +46,7 @@ export var action: ActionFunction = async function ({request}) {
 				return bad_request({field_errors: null, fields, form_error: "username/password combination is incorrect"});
 
 			return create_user_session(user.id, redirect_to);
+
 		case "register":
 			var user_exists = await db.user.findFirst({where: {username}});
 			if (user_exists)
@@ -46,12 +56,12 @@ export var action: ActionFunction = async function ({request}) {
 			if (!user)
 				return bad_request({field_errors: null, fields, form_error: "error when creating new user"});
 
-			return create_user_session(user.id, redirect_to)
+			return create_user_session(user.id, redirect_to);
+
 		default:
 			return bad_request({field_errors: null, fields, form_error: "invalid login type"});
 	}
 };
-
 
 function validate_username(username: string) {
 	if (username.length < 3)
@@ -70,8 +80,8 @@ function validate_url(url: string) {
 }
 
 function Login() {
-	var action_data = useActionData();
-	var [search_params] = useSearchParams();
+	var action_data = useActionData<typeof action>();
+	var [search_params, _] = useSearchParams();
 
 	var form_content = <>
 		<input type="hidden" name="redirect_to" value={search_params.get("redirect_to") ?? undefined} />
@@ -79,7 +89,7 @@ function Login() {
 			<legend className="sr-only">Login or Register?</legend>
 			<label>
 				<input type="radio" name="login_type" value="login" defaultChecked={
-					action_data?.fields?.login_type === "login"
+					action_data?.fields?.login_type !== "register"
 				} />
 				Login
 			</label>
@@ -125,7 +135,7 @@ function Login() {
 	return <div className="container">
 		<div className="content" data-light="">
 			<h1>Login</h1>
-			<form method="post">{form_content}</form>
+			<Form method="post">{form_content}</Form>
 		</div>
 		<div className="links">
 			<ul>

@@ -35,7 +35,7 @@ var storage = createCookieSessionStorage({
 });
 
 function get_user_session(request: Request) {
-	return storage.getSession(request.headers.get("Cookie"));
+	return storage.getSession(request.headers.get("cookie"));
 }
 
 export async function get_user_id(request: Request) {
