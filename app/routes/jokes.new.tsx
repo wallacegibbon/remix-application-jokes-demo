@@ -11,7 +11,7 @@ export var loader: LoaderFunction = async function ({request}) {
 		throw new Response("Unauthorized", {status: 401});
 
 	return json({});
-};
+}
 
 function validate_joke_content(content: string) {
 	if (content.length < 10) return "That joke is too short";
@@ -40,7 +40,7 @@ export var action: ActionFunction = async function ({request}) {
 
 	var joke = await db.joke.create({data: {...fields, jokester_id: user_id}});
 	return redirect(`/jokes/${joke.id}`);
-};
+}
 
 export default function NewJokeRoute() {
 	var action_data = useActionData<typeof action>();

@@ -5,7 +5,7 @@ export function get_env() {
 
 	return {
 		ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-	};
+	}
 }
 
 export type ENV = ReturnType<typeof get_env>;

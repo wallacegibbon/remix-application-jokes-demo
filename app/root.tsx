@@ -2,7 +2,6 @@ import {json, LinksFunction, LoaderFunction, V2_MetaFunction} from "@remix-run/n
 import {isRouteErrorResponse, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError} from "@remix-run/react";
 import {get_env} from "./env.server";
 import type {PropsWithChildren} from "react";
-
 import global_large_styles_url from "~/styles/global-large.css";
 import global_medium_styles_url from "~/styles/global-medium.css";
 import global_styles_url from "~/styles/global.css";
@@ -13,7 +12,7 @@ export var links: LinksFunction = function () {
 		{rel: "stylesheet", href: global_medium_styles_url, media: "print, (min-width: 640px)"},
 		{rel: "stylesheet", href: global_large_styles_url, media: "print, (min-width: 1024px)"},
 	];
-};
+}
 
 export var meta: V2_MetaFunction = function () {
 	var description = "Learn Remix and laugh at the same time!";
@@ -22,17 +21,17 @@ export var meta: V2_MetaFunction = function () {
 		{name: "twitter:description", content: description},
 		{title: "Remix: So great, it's funny!"},
 	];
-};
+}
 
 type LoaderData = {
 	ENV: ReturnType<typeof get_env>,
-};
+}
 
-export var loader: LoaderFunction = async function (_) {
+export var loader: LoaderFunction = async function () {
 	return json<LoaderData>({
 		ENV: get_env(),
 	});
-};
+}
 
 function Document({children, title}: PropsWithChildren<{title?: string}>) {
 	return <html lang="en">

@@ -8,7 +8,7 @@ import {User} from "@prisma/client";
 
 export var links: LinksFunction = function () {
 	return [{rel: "stylesheet", href: styles_url}];
-};
+}
 
 export var meta: V2_MetaFunction = function () {
 	var description = "Login to submit your own jokes to Remix Jokes!";
@@ -17,7 +17,7 @@ export var meta: V2_MetaFunction = function () {
 		{name: "twitter:description", content: description},
 		{title: "Remix Jokes | Login"},
 	];
-};
+}
 
 export var action: ActionFunction = async function ({request}) {
 	var form = await request.formData();
@@ -61,7 +61,7 @@ export var action: ActionFunction = async function ({request}) {
 		default:
 			return bad_request({field_errors: null, fields, form_error: "invalid login type"});
 	}
-};
+}
 
 function validate_username(username: string) {
 	if (username.length < 3)

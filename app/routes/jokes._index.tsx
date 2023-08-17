@@ -11,7 +11,7 @@ export var loader: LoaderFunction = async function () {
 		throw new Response("No random joke found", {status: 404});
 
 	return json<Joke>(joke);
-};
+}
 
 export default function JokesIndexRoute() {
 	var joke = useLoaderData<Joke>();

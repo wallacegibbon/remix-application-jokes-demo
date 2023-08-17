@@ -1,11 +1,10 @@
 import {LinksFunction} from "@remix-run/node";
 import {Link} from "@remix-run/react";
-
 import styles_url from "~/styles/index.css";
 
 export var links: LinksFunction = function () {
 	return [{rel: "stylesheet", href: styles_url}];
-};
+}
 
 export default function Index() {
 	return <div className="container">

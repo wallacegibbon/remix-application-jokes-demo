@@ -48,7 +48,7 @@ export var loader: LoaderFunction = async function ({request}) {
 			"Content-Length": String(Buffer.byteLength(rss_string)),
 		},
 	});
-};
+}
 
 function escape_c_data(s: string) {
 	return s.replace(/\]\]>/g, "]]]]><![CDATA[>");

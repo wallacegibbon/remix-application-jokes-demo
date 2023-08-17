@@ -3,17 +3,16 @@ import {Form, Link, Outlet, useLoaderData} from "@remix-run/react";
 import {db} from "~/util/db.server";
 import {get_user} from "~/util/session.server";
 import {User} from "@prisma/client";
-
 import styles_url from "~/styles/jokes.css";
 
 export var links: LinksFunction = function () {
 	return [{rel: "stylesheet", href: styles_url}];
-};
+}
 
 type LoaderData = {
 	joke_list_items: Array<{id: string, name: string}>,
 	user: Pick<User, "username" | "id"> | null,
-};
+}
 
 export var loader: LoaderFunction = async function ({request}) {
 	var joke_list_items = await db.joke.findMany({
@@ -23,7 +22,7 @@ export var loader: LoaderFunction = async function ({request}) {
 	});
 	var user = await get_user(request);
 	return json<LoaderData>({joke_list_items, user});
-};
+}
 
 export default function JokesRoute() {
 	var data = useLoaderData<LoaderData>();

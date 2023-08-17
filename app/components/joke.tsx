@@ -5,7 +5,7 @@ type JokeDisplayProps = {
 	joke: Pick<Joke, "content" | "name">,
 	is_owner: boolean,
 	can_delete?: boolean,
-};
+}
 
 export function JokeDisplay({joke, is_owner, can_delete = true}: JokeDisplayProps) {
 	return <div>

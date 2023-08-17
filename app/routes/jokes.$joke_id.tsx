@@ -15,12 +15,12 @@ export var meta: V2_MetaFunction = function ({data}) {
 		{name: "twitter:description", content: description},
 		{title},
 	];
-};
+}
 
 type LoaderData = {
 	joke: Joke,
 	is_owner: boolean,
-};
+}
 
 export var loader: LoaderFunction = async function ({params, request}) {
 	var user_id = await get_user_id(request);
@@ -32,7 +32,7 @@ export var loader: LoaderFunction = async function ({params, request}) {
 		joke,
 		is_owner: user_id === joke.jokester_id,
 	});
-};
+}
 
 export var action: ActionFunction = async function ({params, request}) {
 	var form = await request.formData();
@@ -50,11 +50,11 @@ export var action: ActionFunction = async function ({params, request}) {
 
 	await db.joke.delete({where: {id: params.joke_id}});
 	return redirect("/jokes");
-};
+}
 
 export default function JokeIdRoute() {
 	var data = useLoaderData<LoaderData>();
-	return <JokeDisplay is_owner={data.is_owner} joke={data.joke} />
+	return <JokeDisplay is_owner={data.is_owner} joke={data.joke} />;
 }
 
 export function ErrorBoundary() {
