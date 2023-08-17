@@ -13,7 +13,7 @@ export var loader: LoaderFunction = async function () {
 	return json<Joke>(joke);
 };
 
-function JokesIndexRoute() {
+export default function JokesIndexRoute() {
 	var joke = useLoaderData<Joke>();
 	return <div>
 		<p>Here's a random joke:</p>
@@ -21,8 +21,6 @@ function JokesIndexRoute() {
 		<Link to={joke.id}>"{joke.name}" Permalink</Link>
 	</div>;
 }
-
-export default JokesIndexRoute;
 
 export function ErrorBoundary() {
 	var error = useRouteError();

@@ -6,7 +6,8 @@ import styles_url from "~/styles/index.css";
 export var links: LinksFunction = function () {
 	return [{rel: "stylesheet", href: styles_url}];
 };
-function Index() {
+
+export default function Index() {
 	return <div className="container">
 		<div className="content">
 			<h1>Remix <span>Jokes!</span></h1>
@@ -19,6 +20,4 @@ function Index() {
 		</div>
 	</div>;
 }
-
-export default Index;
 

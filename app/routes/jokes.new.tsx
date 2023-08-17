@@ -42,7 +42,7 @@ export var action: ActionFunction = async function ({request}) {
 	return redirect(`/jokes/${joke.id}`);
 };
 
-function NewJokeRoute() {
+export default function NewJokeRoute() {
 	var action_data = useActionData<typeof action>();
 	var navigation = useNavigation();
 
@@ -90,8 +90,6 @@ function NewJokeRoute() {
 		<Form method="post">{form_content}</Form>
 	</div>;
 }
-
-export default NewJokeRoute;
 
 export function ErrorBoundary() {
 	var error = useRouteError();

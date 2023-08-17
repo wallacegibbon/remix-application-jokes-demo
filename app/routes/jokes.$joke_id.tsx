@@ -52,12 +52,10 @@ export var action: ActionFunction = async function ({params, request}) {
 	return redirect("/jokes");
 };
 
-function JokeIdRoute() {
+export default function JokeIdRoute() {
 	var data = useLoaderData<LoaderData>();
 	return <JokeDisplay is_owner={data.is_owner} joke={data.joke} />
 }
-
-export default JokeIdRoute;
 
 export function ErrorBoundary() {
 	var {joke_id} = useParams();

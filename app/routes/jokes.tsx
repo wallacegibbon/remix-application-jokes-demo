@@ -25,7 +25,7 @@ export var loader: LoaderFunction = async function ({request}) {
 	return json<LoaderData>({joke_list_items, user});
 };
 
-function JokesRoute() {
+export default function JokesRoute() {
 	var data = useLoaderData<LoaderData>();
 
 	return <div className="jokes-layout">
@@ -71,6 +71,4 @@ function JokesRoute() {
 		</footer>
 	</div>;
 }
-
-export default JokesRoute;
 

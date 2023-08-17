@@ -79,7 +79,7 @@ function validate_url(url: string) {
 	return "/jokes";
 }
 
-function Login() {
+export default function Login() {
 	var action_data = useActionData<typeof action>();
 	var [search_params, _] = useSearchParams();
 
@@ -145,6 +145,4 @@ function Login() {
 		</div>
 	</div>;
 }
-
-export default Login;
 

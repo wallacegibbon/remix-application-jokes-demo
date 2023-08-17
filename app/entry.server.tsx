@@ -16,14 +16,12 @@ global.ENV = get_env();
 
 var ABORT_DELAY = 5_000;
 
-function handle_request(req: Request, status: number, resp_headers: Headers, ctx: EntryContext, _: AppLoadContext) {
+export default function handle_request(req: Request, status: number, resp_headers: Headers, ctx: EntryContext, _: AppLoadContext) {
 	if (isbot(req.headers.get("user-agent")))
 		return handle_bot_request(req, status, resp_headers, ctx)
 	else
 		return handle_browser_request(req, status, resp_headers, ctx);
 }
-
-export default handle_request;
 
 function handle_bot_request(req: Request, status: number, resp_headers: Headers, ctx: EntryContext) {
 	var children = <RemixServer context={ctx} url={req.url} abortDelay={ABORT_DELAY} />;

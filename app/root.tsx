@@ -57,7 +57,7 @@ function Document({children, title}: PropsWithChildren<{title?: string}>) {
 	</html>;
 }
 
-function App() {
+export default function App() {
 	var data = useLoaderData();
 	return <Document>
 		<Outlet />
@@ -65,8 +65,6 @@ function App() {
 		<script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(data.ENV)}`}} />
 	</Document>;
 }
-
-export default App;
 
 export function ErrorBoundary() {
 	var error = useRouteError();
