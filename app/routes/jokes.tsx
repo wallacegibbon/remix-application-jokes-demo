@@ -5,7 +5,7 @@ import { get_user } from "~/util/session.server";
 import { User } from "@prisma/client";
 import styles_url from "~/styles/jokes.css";
 
-export var links: LinksFunction = function () {
+export let links: LinksFunction = function () {
   return [{ rel: "stylesheet", href: styles_url }];
 }
 
@@ -14,18 +14,18 @@ type LoaderData = {
   user: Pick<User, "username" | "id"> | null,
 };
 
-export var loader: LoaderFunction = async function ({ request }) {
-  var joke_list_items = await db.joke.findMany({
+export let loader: LoaderFunction = async function ({ request }) {
+  let joke_list_items = await db.joke.findMany({
     orderBy: { created_at: "desc" },
     select: { id: true, name: true },
     take: 10,
   });
-  var user = await get_user(request);
+  let user = await get_user(request);
   return json<LoaderData>({ joke_list_items, user });
 }
 
 export default function JokesRoute() {
-  var data = useLoaderData<LoaderData>();
+  let data = useLoaderData<LoaderData>();
 
   return (
     <div className="jokes-layout">

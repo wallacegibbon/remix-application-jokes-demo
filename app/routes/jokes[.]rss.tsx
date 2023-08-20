@@ -1,22 +1,22 @@
 import { LoaderFunction } from "@remix-run/node";
 import { db } from "~/util/db.server";
 
-export var loader: LoaderFunction = async function ({ request }) {
-  var jokes = await db.joke.findMany({
+export let loader: LoaderFunction = async function ({ request }) {
+  let jokes = await db.joke.findMany({
     include: { jokester: { select: { username: true } } },
     orderBy: { created_at: "desc" },
     take: 100,
   });
 
-  var host = request.headers.get("X-Forwarded-Host") ?? request.headers.get("host");
+  let host = request.headers.get("X-Forwarded-Host") ?? request.headers.get("host");
   if (!host)
     throw new Error("Could not determine domain URL.");
 
-  var protocol = host.includes("localhost") ? "http" : "https";
-  var domain = `${protocol}://${host}`;
-  var jokes_url = `${domain}/jokes`;
+  let protocol = host.includes("localhost") ? "http" : "https";
+  let domain = `${protocol}://${host}`;
+  let jokes_url = `${domain}/jokes`;
 
-  var items = jokes.map(function (joke) {
+  let items = jokes.map(function (joke) {
     return `
       <item>
         <title><![CDATA[${escape_c_data(joke.name)}]]></title>
@@ -29,7 +29,7 @@ export var loader: LoaderFunction = async function ({ request }) {
     `.trim();
   });
 
-  var rss_string = `
+  let rss_string = `
 		<rss xmlns:blogChannel="${jokes_url}" version="2.0">
 			<channel>
 				<title>Remix Jokes</title>

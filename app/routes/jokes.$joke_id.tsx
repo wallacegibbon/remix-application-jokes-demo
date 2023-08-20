@@ -5,8 +5,8 @@ import { db } from "~/util/db.server";
 import { get_user_id, require_user_id } from "~/util/session.server";
 import { JokeDisplay } from "~/components/joke";
 
-export var meta: V2_MetaFunction = function ({ data }) {
-  var { description, title } = data
+export let meta: V2_MetaFunction = function ({ data }) {
+  let { description, title } = data
     ? { description: `Enjoy the "${data.joke.name}" joke and much more`, title: `"${data.joke.name}" joke` }
     : { description: "No joke found", title: "No joke" };
 
@@ -22,9 +22,9 @@ type LoaderData = {
   is_owner: boolean,
 };
 
-export var loader: LoaderFunction = async function ({ params, request }) {
-  var user_id = await get_user_id(request);
-  var joke = await db.joke.findUnique({ where: { id: params.joke_id } });
+export let loader: LoaderFunction = async function ({ params, request }) {
+  let user_id = await get_user_id(request);
+  let joke = await db.joke.findUnique({ where: { id: params.joke_id } });
   if (!joke)
     throw new Response("joke is not found", { status: 400 });
 
@@ -34,14 +34,14 @@ export var loader: LoaderFunction = async function ({ params, request }) {
   });
 }
 
-export var action: ActionFunction = async function ({ params, request }) {
-  var form = await request.formData();
-  var intent = form.get("intent");
+export let action: ActionFunction = async function ({ params, request }) {
+  let form = await request.formData();
+  let intent = form.get("intent");
   if (intent !== "delete")
     throw new Response(`The intent ${intent} is not supported`, { status: 404 });
 
-  var user_id = await require_user_id(request);
-  var joke = await db.joke.findUnique({ where: { id: params.joke_id } });
+  let user_id = await require_user_id(request);
+  let joke = await db.joke.findUnique({ where: { id: params.joke_id } });
   if (!joke)
     throw new Response("Can't delete what does not exist", { status: 404 });
 
@@ -53,13 +53,13 @@ export var action: ActionFunction = async function ({ params, request }) {
 }
 
 export default function JokeIdRoute() {
-  var data = useLoaderData<LoaderData>();
+  let data = useLoaderData<LoaderData>();
   return <JokeDisplay is_owner={data.is_owner} joke={data.joke} />;
 }
 
 export function ErrorBoundary() {
-  var { joke_id } = useParams();
-  var error = useRouteError();
+  let { joke_id } = useParams();
+  let error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
     if (error.status === 400)

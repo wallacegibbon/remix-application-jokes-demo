@@ -6,7 +6,7 @@ import global_large_styles_url from "~/styles/global-large.css";
 import global_medium_styles_url from "~/styles/global-medium.css";
 import global_styles_url from "~/styles/global.css";
 
-export var links: LinksFunction = function () {
+export let links: LinksFunction = function () {
   return [
     { rel: "stylesheet", href: global_styles_url },
     { rel: "stylesheet", href: global_medium_styles_url, media: "print, (min-width: 640px)" },
@@ -14,8 +14,8 @@ export var links: LinksFunction = function () {
   ];
 }
 
-export var meta: V2_MetaFunction = function () {
-  var description = "Learn Remix and laugh at the same time!";
+export let meta: V2_MetaFunction = function () {
+  let description = "Learn Remix and laugh at the same time!";
   return [
     { name: "description", content: description },
     { name: "twitter:description", content: description },
@@ -27,7 +27,7 @@ type LoaderData = {
   ENV: ReturnType<typeof get_env>,
 };
 
-export var loader: LoaderFunction = async function () {
+export let loader: LoaderFunction = async function () {
   return json<LoaderData>({
     ENV: get_env(),
   });
@@ -59,7 +59,7 @@ function Document({ children, title }: PropsWithChildren<{ title?: string }>) {
 }
 
 export default function App() {
-  var data = useLoaderData();
+  let data = useLoaderData();
   return (
     <Document>
       <Outlet />
@@ -70,7 +70,7 @@ export default function App() {
 }
 
 export function ErrorBoundary() {
-  var error = useRouteError();
+  let error = useRouteError();
 
   if (isRouteErrorResponse(error))
     return (
@@ -81,7 +81,7 @@ export function ErrorBoundary() {
       </Document>
     );
 
-  var error_message = error instanceof Error ? error.message : "unknown error";
+  let error_message = error instanceof Error ? error.message : "unknown error";
   return (
     <Document title="Oops">
       <div className="error-container">

@@ -14,7 +14,7 @@ import { get_env } from "./env.server";
 
 global.ENV = get_env();
 
-var ABORT_DELAY = 5_000;
+let ABORT_DELAY = 5_000;
 
 export default function handle_request(req: Request, status: number, resp_headers: Headers, ctx: EntryContext, _: AppLoadContext) {
   if (isbot(req.headers.get("user-agent")))
@@ -24,21 +24,21 @@ export default function handle_request(req: Request, status: number, resp_header
 }
 
 function handle_bot_request(req: Request, status: number, resp_headers: Headers, ctx: EntryContext) {
-  var children = <RemixServer context={ctx} url={req.url} abortDelay={ABORT_DELAY} />;
-  var shell_rendered = false;
+  let children = <RemixServer context={ctx} url={req.url} abortDelay={ABORT_DELAY} />;
+  let shell_rendered = false;
 
   function on_shell_ready() {
     shell_rendered = true;
-    var body = new PassThrough();
+    let body = new PassThrough();
     resp_headers.set("Content-Type", "text/html");
-    var resp = new Response(body, { headers: resp_headers, status: status });
+    let resp = new Response(body, { headers: resp_headers, status: status });
     return { resp, body };
   }
 
   return new Promise(function (resolve, reject) {
-    var { pipe, abort } = renderToPipeableStream(children, {
+    let { pipe, abort } = renderToPipeableStream(children, {
       onAllReady() {
-        var { resp, body } = on_shell_ready();
+        let { resp, body } = on_shell_ready();
         resolve(resp);
         pipe(body);
       },
@@ -56,21 +56,21 @@ function handle_bot_request(req: Request, status: number, resp_headers: Headers,
 }
 
 function handle_browser_request(req: Request, status: number, resp_headers: Headers, ctx: EntryContext) {
-  var children = <RemixServer context={ctx} url={req.url} abortDelay={ABORT_DELAY} />;
-  var shell_rendered = false;
+  let children = <RemixServer context={ctx} url={req.url} abortDelay={ABORT_DELAY} />;
+  let shell_rendered = false;
 
   function on_shell_ready() {
     shell_rendered = true;
-    var body = new PassThrough();
+    let body = new PassThrough();
     resp_headers.set("Content-Type", "text/html");
-    var resp = new Response(body, { headers: resp_headers, status: status });
+    let resp = new Response(body, { headers: resp_headers, status: status });
     return { resp, body };
   }
 
   return new Promise(function (resolve, reject) {
-    var { pipe, abort } = renderToPipeableStream(children, {
+    let { pipe, abort } = renderToPipeableStream(children, {
       onShellReady() {
-        var { resp, body } = on_shell_ready();
+        let { resp, body } = on_shell_ready();
         resolve(resp);
         pipe(body);
       },
@@ -86,4 +86,3 @@ function handle_browser_request(req: Request, status: number, resp_headers: Head
     setTimeout(abort, ABORT_DELAY);
   });
 }
-

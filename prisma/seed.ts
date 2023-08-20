@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-var db = new PrismaClient();
+let db = new PrismaClient();
 
 function get_jokes() {
   return [
@@ -36,7 +36,7 @@ function get_jokes() {
 }
 
 async function seed() {
-  var kody = await db.user.create({
+  let kody = await db.user.create({
     data: {
       username: "kody",
       /// this is a hashed version of "twixrox"
@@ -44,7 +44,7 @@ async function seed() {
     },
   });
   await Promise.all(get_jokes().map(function (joke) {
-    var data = { jokester_id: kody.id, ...joke };
+    let data = { jokester_id: kody.id, ...joke };
     return db.joke.create({ data });
   }));
 }

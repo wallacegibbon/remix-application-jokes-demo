@@ -5,8 +5,8 @@ import { db } from "~/util/db.server";
 import { bad_request } from "~/util/request.server";
 import { get_user_id, require_user_id } from "~/util/session.server";
 
-export var loader: LoaderFunction = async function ({ request }) {
-  var user_id = await get_user_id(request);
+export let loader: LoaderFunction = async function ({ request }) {
+  let user_id = await get_user_id(request);
   if (!user_id)
     throw new Response("Unauthorized", { status: 401 });
 
@@ -21,36 +21,38 @@ function validate_joke_name(name: string) {
   if (name.length < 3) return "That joke's name is too short";
 }
 
-export var action: ActionFunction = async function ({ request }) {
-  var user_id = await require_user_id(request);
-  var form = await request.formData();
-  var name = form.get("name");
-  var content = form.get("content");
+export let action: ActionFunction = async function ({ request }) {
+  let user_id = await require_user_id(request);
+  let form = await request.formData();
+  let name = form.get("name");
+  let content = form.get("content");
 
   if (typeof content !== "string" || typeof name !== "string")
     throw new Error("form not submitted correctly");
 
-  var fields = { name, content };
-  var field_errors = {
+  let fields = { name, content };
+  let field_errors = {
     name: validate_joke_name(name),
     content: validate_joke_content(content),
   };
   if (Object.values(field_errors).some(Boolean))
     return bad_request({ fields, field_errors, form_error: null });
 
-  var joke = await db.joke.create({ data: { ...fields, jokester_id: user_id } });
+  let joke = await db.joke.create({ data: { ...fields, jokester_id: user_id } });
   return redirect(`/jokes/${joke.id}`);
 }
 
 export default function NewJokeRoute() {
-  var action_data = useActionData<typeof action>();
-  var navigation = useNavigation();
+  let action_data = useActionData<typeof action>();
+  let navigation = useNavigation();
 
   if (navigation.formData) {
-    var content = navigation.formData.get("content");
-    var name = navigation.formData.get("name");
+    let content = navigation.formData.get("content");
+    let name = navigation.formData.get("name");
     if (typeof content === "string" && typeof name === "string" && !validate_joke_content(content) && !validate_joke_name(name))
-      return <JokeDisplay can_delete={false} is_owner={true} joke={{ name, content }} />;
+      return (
+        <JokeDisplay can_delete={false} is_owner={true} joke={{ name, content }} />
+      );
   }
 
   return (
@@ -65,9 +67,11 @@ export default function NewJokeRoute() {
               aria-errormessage={action_data?.field_errors?.name ? "name-error" : undefined}
             />
           </label>
-          {action_data?.field_errors?.name && <p className="form-validation-error" id="name-error" role="alert" >
-            {action_data.field_errors.name}
-          </p>}
+          {action_data?.field_errors?.name && (
+            <p className="form-validation-error" id="name-error" role="alert" >
+              {action_data.field_errors.name}
+            </p>
+          )}
         </div>
         <div>
           <label>
@@ -77,13 +81,17 @@ export default function NewJokeRoute() {
               aria-errormessage={action_data?.field_errors?.content ? "content-error" : undefined}
             />
           </label>
-          {action_data?.field_errors?.content && <p className="form-validation-error" id="content-error" role="alert">
-            {action_data.field_errors.content}
-          </p>}
+          {action_data?.field_errors?.content && (
+            <p className="form-validation-error" id="content-error" role="alert">
+              {action_data.field_errors.content}
+            </p>
+          )}
         </div>
-        {action_data?.form_error && <p className="form-validation-error" role="alert">
-          {action_data.form_error}
-        </p>}
+        {action_data?.form_error && (
+          <p className="form-validation-error" role="alert">
+            {action_data.form_error}
+          </p>
+        )}
         <div>
           <button type="submit" className="button">Add</button>
         </div>
@@ -93,7 +101,7 @@ export default function NewJokeRoute() {
 }
 
 export function ErrorBoundary() {
-  var error = useRouteError();
+  let error = useRouteError();
 
   if (isRouteErrorResponse(error))
     return (
