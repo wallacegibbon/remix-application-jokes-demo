@@ -1,4 +1,3 @@
 export default function Component() {
-	return <span>component inside folder</span>;
+  return <span>component inside folder</span>;
 }
-

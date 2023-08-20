@@ -1,29 +1,27 @@
 generator client {
-	provider	= "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-	provider	= "sqlite"
-	url		= env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
-
 model User {
-	id		String		@id @default(uuid())
-	created_at	DateTime	@default(now())
-	updated_at	DateTime	@updatedAt
-	username	String		@unique
-	password_hash	String
-	jokes		Joke[]
+  id            String   @id @default(uuid())
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  username      String   @unique
+  password_hash String
+  jokes         Joke[]
 }
 
 model Joke {
-	id		String		@id @default(uuid())
-	jokester_id	String
-	jokester	User		@relation(fields: [jokester_id], references: [id], onDelete: Cascade)
-	created_at	DateTime	@default(now())
-	updated_at	DateTime	@updatedAt
-	name		String
-	content		String
+  id          String   @id @default(uuid())
+  jokester_id String
+  jokester    User     @relation(fields: [jokester_id], references: [id], onDelete: Cascade)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  name        String
+  content     String
 }
-

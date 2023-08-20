@@ -1,6 +1,5 @@
-import {Outlet} from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
 
 export default function Index() {
-	return <span>test-route-folder <Outlet /></span>;
+  return <span>test-route-folder <Outlet /></span>;
 }
-
