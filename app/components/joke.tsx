@@ -15,7 +15,9 @@ export function JokeDisplay({ joke, is_owner, can_delete = true }: JokeDisplayPr
       <Link to=".">"{joke.name}" Permalink</Link>
       {is_owner && (
         <Form method="post">
-          <button className="button" disabled={!can_delete} name="intent" type="submit" value="delete">Delete</button>
+          <button className="button" disabled={!can_delete} name="intent" type="submit" value="delete">
+            Delete
+          </button>
         </Form>
       )}
     </div>

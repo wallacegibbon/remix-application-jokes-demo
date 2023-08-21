@@ -49,10 +49,14 @@ export default function NewJokeRoute() {
   if (navigation.formData) {
     let content = navigation.formData.get("content");
     let name = navigation.formData.get("name");
-    if (typeof content === "string" && typeof name === "string" && !validate_joke_content(content) && !validate_joke_name(name))
+    if (
+      typeof content === "string" && typeof name === "string" &&
+      !validate_joke_content(content) && !validate_joke_name(name)
+    ) {
       return (
         <JokeDisplay can_delete={false} is_owner={true} joke={{ name, content }} />
       );
+    }
   }
 
   return (

@@ -4,7 +4,7 @@ import styles_url from "~/styles/index.css";
 
 export let links: LinksFunction = function () {
   return [{ rel: "stylesheet", href: styles_url }];
-}
+};
 
 export default function Index() {
   return (

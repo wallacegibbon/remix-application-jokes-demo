@@ -3,8 +3,8 @@ import { logout } from "~/util/session.server";
 
 export let action: ActionFunction = async function ({ request }) {
   return logout(request);
-}
+};
 
 export let loader: LoaderFunction = async function () {
   return redirect("/");
-}
+};

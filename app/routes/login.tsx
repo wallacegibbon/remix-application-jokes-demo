@@ -104,15 +104,15 @@ export default function Login() {
           <fieldset>
             <legend className="sr-only">Login or Register?</legend>
             <label>
-              <input type="radio" name="login_type" value="login" defaultChecked={
-                action_data?.fields?.login_type !== "register"
-              } />
+              <input type="radio" name="login_type" value="login"
+                defaultChecked={action_data?.fields?.login_type !== "register"}
+              />
               Login
             </label>
             <label>
-              <input type="radio" name="login_type" value="register" defaultChecked={
-                action_data?.fields?.login_type === "register"
-              } />
+              <input type="radio" name="login_type" value="register"
+                defaultChecked={action_data?.fields?.login_type === "register"}
+              />
               Register
             </label>
           </fieldset>

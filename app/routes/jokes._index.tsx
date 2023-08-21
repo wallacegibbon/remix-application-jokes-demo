@@ -22,7 +22,7 @@ export default function JokesIndexRoute() {
       <Link to={joke.id}>"{joke.name}" Permalink</Link>
     </div>
   );
-};
+}
 
 export function ErrorBoundary() {
   let error = useRouteError();

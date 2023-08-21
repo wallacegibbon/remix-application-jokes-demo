@@ -7,7 +7,7 @@ import styles_url from "~/styles/jokes.css";
 
 export let links: LinksFunction = function () {
   return [{ rel: "stylesheet", href: styles_url }];
-}
+};
 
 type LoaderData = {
   joke_list_items: Array<{ id: string, name: string }>,
@@ -22,11 +22,10 @@ export let loader: LoaderFunction = async function ({ request }) {
   });
   let user = await get_user(request);
   return json<LoaderData>({ joke_list_items, user });
-}
+};
 
 export default function JokesRoute() {
   let data = useLoaderData<LoaderData>();
-
   return (
     <div className="jokes-layout">
       <header className="jokes-header">
