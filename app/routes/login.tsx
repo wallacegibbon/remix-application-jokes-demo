@@ -4,7 +4,6 @@ import { db } from "~/util/db.server";
 import { bad_request } from "~/util/request.server";
 import styles_url from "~/styles/login.css";
 import { create_user_session, login, register } from "~/util/session.server";
-import { User } from "@prisma/client";
 
 export let links: LinksFunction = function () {
   return [{ rel: "stylesheet", href: styles_url }];
