@@ -2,11 +2,11 @@ import { LinksFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import styles_url from "~/styles/index.css";
 
-export let links: LinksFunction = function () {
-  return [{ rel: "stylesheet", href: styles_url }];
-};
+export let links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles_url },
+];
 
-export default function Index() {
+let Index: React.FC = () => {
   return (
     <div className="container">
       <div className="content">
@@ -22,3 +22,4 @@ export default function Index() {
   );
 }
 
+export default Index;

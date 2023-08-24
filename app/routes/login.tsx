@@ -5,20 +5,20 @@ import { bad_request } from "~/util/request.server";
 import styles_url from "~/styles/login.css";
 import { create_user_session, login, register } from "~/util/session.server";
 
-export let links: LinksFunction = function () {
-  return [{ rel: "stylesheet", href: styles_url }];
-}
+export let links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles_url },
+];
 
-export let meta: V2_MetaFunction = function () {
+export let meta: V2_MetaFunction = () => {
   let description = "Login to submit your own jokes to Remix Jokes!";
   return [
     { name: "description", content: description },
     { name: "twitter:description", content: description },
     { title: "Remix Jokes | Login" },
   ];
-}
+};
 
-export let action: ActionFunction = async function ({ request }) {
+export let action: ActionFunction = async ({ request }) => {
   let form = await request.formData();
   let login_type = form.get("login_type");
   let password = form.get("password");
@@ -72,25 +72,25 @@ export let action: ActionFunction = async function ({ request }) {
     default:
       return bad_request({ field_errors: null, fields, form_error: "invalid login type" });
   }
-}
+};
 
-function validate_username(username: string) {
+let validate_username = (username: string) => {
   if (username.length < 3)
     return "Usernames must be at least 3 characters long";
-}
+};
 
-function validate_password(password: string) {
+let validate_password = (password: string) => {
   if (password.length < 6)
     return "Passwords must be at least 6 characters long";
-}
+};
 
-function validate_url(url: string) {
+let validate_url = (url: string) => {
   let urls = ["/jokes", "/", "https://remix.run"];
   if (urls.includes(url)) return url;
   return "/jokes";
-}
+};
 
-export default function Login() {
+let Login: React.FC = () => {
   let action_data = useActionData<typeof action>();
   let [search_params, _] = useSearchParams();
 
@@ -161,4 +161,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

@@ -3,7 +3,7 @@ import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "@remix
 import { Joke } from "@prisma/client";
 import { db } from "~/util/db.server";
 
-export let loader: LoaderFunction = async function () {
+export let loader: LoaderFunction = async () => {
   let count = await db.joke.count();
   let random_num = Math.floor(Math.random() * count);
   let [joke] = await db.joke.findMany({ skip: random_num, take: 1 });
@@ -13,7 +13,7 @@ export let loader: LoaderFunction = async function () {
   return json<Joke>(joke);
 };
 
-export default function JokesIndexRoute() {
+let JokesIndexRoute: React.FC = () => {
   let joke = useLoaderData<Joke>();
   return (
     <div>
@@ -22,9 +22,11 @@ export default function JokesIndexRoute() {
       <Link to={joke.id}>"{joke.name}" Permalink</Link>
     </div>
   );
-}
+};
 
-export function ErrorBoundary() {
+export default JokesIndexRoute;
+
+export let ErrorBoundary = () => {
   let error = useRouteError();
   if (isRouteErrorResponse(error))
     return (
@@ -39,4 +41,4 @@ export function ErrorBoundary() {
       I did a whoopsies.
     </div>
   );
-}
+};

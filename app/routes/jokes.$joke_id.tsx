@@ -5,7 +5,7 @@ import { db } from "~/util/db.server";
 import { get_user_id, require_user_id } from "~/util/session.server";
 import { JokeDisplay } from "~/components/joke";
 
-export let meta: V2_MetaFunction = function ({ data }) {
+export let meta: V2_MetaFunction = ({ data }) => {
   let { description, title } = data
     ? { description: `Enjoy the "${data.joke.name}" joke and much more`, title: `"${data.joke.name}" joke` }
     : { description: "No joke found", title: "No joke" };
@@ -15,14 +15,14 @@ export let meta: V2_MetaFunction = function ({ data }) {
     { name: "twitter:description", content: description },
     { title },
   ];
-}
+};
 
 type LoaderData = {
   joke: Joke,
   is_owner: boolean,
 };
 
-export let loader: LoaderFunction = async function ({ params, request }) {
+export let loader: LoaderFunction = async ({ params, request }) => {
   let user_id = await get_user_id(request);
   let joke = await db.joke.findUnique({ where: { id: params.joke_id } });
   if (!joke)
@@ -32,9 +32,9 @@ export let loader: LoaderFunction = async function ({ params, request }) {
     joke,
     is_owner: user_id === joke.jokester_id,
   });
-}
+};
 
-export let action: ActionFunction = async function ({ params, request }) {
+export let action: ActionFunction = async ({ params, request }) => {
   let form = await request.formData();
   let intent = form.get("intent");
   if (intent !== "delete")
@@ -50,14 +50,16 @@ export let action: ActionFunction = async function ({ params, request }) {
 
   await db.joke.delete({ where: { id: params.joke_id } });
   return redirect("/jokes");
-}
+};
 
-export default function JokeIdRoute() {
+let JokeIdRoute: React.FC = () => {
   let data = useLoaderData<LoaderData>();
   return <JokeDisplay is_owner={data.is_owner} joke={data.joke} />;
-}
+};
 
-export function ErrorBoundary() {
+export default JokeIdRoute;
+
+export let ErrorBoundary = () => {
   let { joke_id } = useParams();
   let error = useRouteError();
 
@@ -75,5 +77,5 @@ export function ErrorBoundary() {
       There was an error loading joke by the id "{joke_id}". Sorry.
     </div>
   );
-}
+};
 

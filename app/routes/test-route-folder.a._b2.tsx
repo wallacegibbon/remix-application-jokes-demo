@@ -1,5 +1,5 @@
 import { Outlet } from "@remix-run/react";
 
-export default function Route() {
-  return <span>_b2 <Outlet /></span>;
-}
+let Route: React.FC = () => <span>_b2 <Outlet /></span>;
+
+export default Route;

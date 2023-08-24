@@ -1,6 +1,6 @@
 import invariant from "tiny-invariant";
 
-export function get_env() {
+export let get_env = () => {
   invariant(process.env.ADMIN_EMAIL, "ADMIN_EMAIL should be defined");
   return {
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,

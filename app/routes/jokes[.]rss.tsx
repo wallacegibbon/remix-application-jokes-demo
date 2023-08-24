@@ -1,7 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
 import { db } from "~/util/db.server";
 
-export let loader: LoaderFunction = async function ({ request }) {
+export let loader: LoaderFunction = async ({ request }) => {
   let jokes = await db.joke.findMany({
     include: { jokester: { select: { username: true } } },
     orderBy: { created_at: "desc" },
@@ -16,18 +16,16 @@ export let loader: LoaderFunction = async function ({ request }) {
   let domain = `${protocol}://${host}`;
   let jokes_url = `${domain}/jokes`;
 
-  let items = jokes.map(function (joke) {
-    return `
-      <item>
-        <title><![CDATA[${escape_c_data(joke.name)}]]></title>
-        <description><![CDATA[A funny joke called ${escape_html(joke.name)}]]></description>
-        <author><![CDATA[${escape_c_data(joke.jokester.username)}]]></author>
-        <pubDate>${joke.created_at.toUTCString()}</pubDate>
-        <link>${jokes_url}/${joke.id}</link>
-        <guid>${jokes_url}/${joke.id}</guid>
-      </item>
-    `.trim();
-  });
+  let items = jokes.map((joke) => `
+    <item>
+      <title><![CDATA[${escape_c_data(joke.name)}]]></title>
+      <description><![CDATA[A funny joke called ${escape_html(joke.name)}]]></description>
+      <author><![CDATA[${escape_c_data(joke.jokester.username)}]]></author>
+      <pubDate>${joke.created_at.toUTCString()}</pubDate>
+      <link>${jokes_url}/${joke.id}</link>
+      <guid>${jokes_url}/${joke.id}</guid>
+    </item>
+  `.trim());
 
   let rss_string = `
 		<rss xmlns:blogChannel="${jokes_url}" version="2.0">
@@ -50,18 +48,16 @@ export let loader: LoaderFunction = async function ({ request }) {
       "Content-Length": String(Buffer.byteLength(rss_string)),
     },
   });
-}
+};
 
-function escape_c_data(s: string) {
-  return s.replace(/\]\]>/g, "]]]]><![CDATA[>");
-}
+let escape_c_data = (s: string) =>
+  s.replace(/\]\]>/g, "]]]]><![CDATA[>");
 
-function escape_html(s: string) {
-  return s
+let escape_html = (s: string) =>
+  s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-}
 

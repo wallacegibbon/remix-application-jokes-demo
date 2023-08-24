@@ -5,23 +5,23 @@ import { db } from "~/util/db.server";
 import { bad_request } from "~/util/request.server";
 import { get_user_id, require_user_id } from "~/util/session.server";
 
-export let loader: LoaderFunction = async function ({ request }) {
+export let loader: LoaderFunction = async ({ request }) => {
   let user_id = await get_user_id(request);
   if (!user_id)
     throw new Response("Unauthorized", { status: 401 });
 
   return json({});
-}
+};
 
-function validate_joke_content(content: string) {
+let validate_joke_content = (content: string) => {
   if (content.length < 10) return "That joke is too short";
-}
+};
 
-function validate_joke_name(name: string) {
+let validate_joke_name = (name: string) => {
   if (name.length < 3) return "That joke's name is too short";
-}
+};
 
-export let action: ActionFunction = async function ({ request }) {
+export let action: ActionFunction = async ({ request }) => {
   let user_id = await require_user_id(request);
   let form = await request.formData();
   let name = form.get("name");
@@ -40,9 +40,9 @@ export let action: ActionFunction = async function ({ request }) {
 
   let joke = await db.joke.create({ data: { ...fields, jokester_id: user_id } });
   return redirect(`/jokes/${joke.id}`);
-}
+};
 
-export default function NewJokeRoute() {
+let NewJokeRoute: React.FC = () => {
   let action_data = useActionData<typeof action>();
   let navigation = useNavigation();
 
@@ -102,9 +102,11 @@ export default function NewJokeRoute() {
       </Form>
     </div>
   );
-}
+};
 
-export function ErrorBoundary() {
+export default NewJokeRoute;
+
+export let ErrorBoundary = () => {
   let error = useRouteError();
 
   if (isRouteErrorResponse(error))
@@ -120,4 +122,4 @@ export function ErrorBoundary() {
       Something unexpected went wrong. Sorry about that.
     </div>
   );
-}
+};
