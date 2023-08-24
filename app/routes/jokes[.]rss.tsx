@@ -28,18 +28,18 @@ export let loader: LoaderFunction = async ({ request }) => {
   `.trim());
 
   let rss_string = `
-		<rss xmlns:blogChannel="${jokes_url}" version="2.0">
-			<channel>
-				<title>Remix Jokes</title>
-				<link>${jokes_url}</link>
-				<description>Some funny jokes</description>
-				<language>en-us</language>
-				<generator>Kody the Koala</generator>
-				<ttl>40</ttl>
-				${items}
-			</channel>
-		</rss>
-	`.trim();
+    <rss xmlns:blogChannel="${jokes_url}" version="2.0">
+      <channel>
+        <title>Remix Jokes</title>
+        <link>${jokes_url}</link>
+        <description>Some funny jokes</description>
+        <language>en-us</language>
+        <generator>Kody the Koala</generator>
+        <ttl>40</ttl>
+        ${items}
+      </channel>
+    </rss>
+  `.trim();
 
   return new Response(rss_string, {
     headers: {
