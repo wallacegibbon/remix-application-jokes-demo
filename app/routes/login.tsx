@@ -1,6 +1,6 @@
 import { ActionFunction, LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
-import { db } from "~/util/db.server";
+import db from "~/util/db.server";
 import { bad_request } from "~/util/request.server";
 import styles_url from "~/styles/login.css";
 import { create_user_session, login, register } from "~/util/session.server";
@@ -70,7 +70,11 @@ export let action: ActionFunction = async ({ request }) => {
     }
 
     default:
-      return bad_request({ field_errors: null, fields, form_error: "invalid login type" });
+      return bad_request({
+        field_errors: null,
+        fields,
+        form_error: "invalid login type",
+      });
   }
 };
 

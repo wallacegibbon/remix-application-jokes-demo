@@ -1,6 +1,6 @@
 import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
-import { db } from "~/util/db.server";
+import db from "~/util/db.server";
 import { get_user } from "~/util/session.server";
 import { User } from "@prisma/client";
 import styles_url from "~/styles/jokes.css";

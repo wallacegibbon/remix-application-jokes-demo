@@ -1,7 +1,7 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "@remix-run/react";
 import { Joke } from "@prisma/client";
-import { db } from "~/util/db.server";
+import db from "~/util/db.server";
 
 export let loader: LoaderFunction = async () => {
   let count = await db.joke.count();

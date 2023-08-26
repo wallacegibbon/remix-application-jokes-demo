@@ -1,7 +1,7 @@
 import { isRouteErrorResponse, useLoaderData, useParams, useRouteError } from "@remix-run/react";
 import { ActionFunction, json, LoaderFunction, redirect, V2_MetaFunction } from "@remix-run/node";
 import { Joke } from "@prisma/client";
-import { db } from "~/util/db.server";
+import db from "~/util/db.server";
 import { get_user_id, require_user_id } from "~/util/session.server";
 import { JokeDisplay } from "~/components/joke";
 

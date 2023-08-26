@@ -1,5 +1,5 @@
 import { LoaderFunction } from "@remix-run/node";
-import { db } from "~/util/db.server";
+import db from "~/util/db.server";
 
 export let loader: LoaderFunction = async ({ request }) => {
   let jokes = await db.joke.findMany({

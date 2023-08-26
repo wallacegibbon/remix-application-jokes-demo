@@ -1,4 +1,4 @@
-import { db } from "./db.server";
+import db from "~/util/db.server";
 import bcrypt from "bcryptjs";
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 
