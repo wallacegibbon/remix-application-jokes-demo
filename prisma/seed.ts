@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import {PrismaClient} from "@prisma/client";
 
 let db = new PrismaClient();
 
@@ -42,8 +42,8 @@ let seed = async () => {
     },
   });
   await Promise.all(get_jokes().map((joke) => {
-    let data = { jokester_id: kody.id, ...joke };
-    return db.joke.create({ data });
+    let data = {jokester_id: kody.id, ...joke};
+    return db.joke.create({data});
   }));
 }
 

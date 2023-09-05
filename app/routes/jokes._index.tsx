@@ -1,14 +1,14 @@
-import { json, LoaderFunction } from "@remix-run/node";
-import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "@remix-run/react";
-import { Joke } from "@prisma/client";
+import {json, LoaderFunction} from "@remix-run/node";
+import {isRouteErrorResponse, Link, useLoaderData, useRouteError} from "@remix-run/react";
+import {Joke} from "@prisma/client";
 import db from "~/util/db.server";
 
 export let loader: LoaderFunction = async () => {
   let count = await db.joke.count();
   let random_num = Math.floor(Math.random() * count);
-  let [joke] = await db.joke.findMany({ skip: random_num, take: 1 });
+  let [joke] = await db.joke.findMany({skip: random_num, take: 1});
   if (!joke)
-    throw new Response("No random joke found", { status: 404 });
+    throw new Response("No random joke found", {status: 404});
 
   return json<Joke>(joke);
 };

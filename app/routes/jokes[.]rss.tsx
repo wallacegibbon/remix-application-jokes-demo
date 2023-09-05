@@ -1,10 +1,10 @@
-import { LoaderFunction } from "@remix-run/node";
+import {LoaderFunction} from "@remix-run/node";
 import db from "~/util/db.server";
 
-export let loader: LoaderFunction = async ({ request }) => {
+export let loader: LoaderFunction = async ({request}) => {
   let jokes = await db.joke.findMany({
-    include: { jokester: { select: { username: true } } },
-    orderBy: { created_at: "desc" },
+    include: {jokester: {select: {username: true}}},
+    orderBy: {created_at: "desc"},
     take: 100,
   });
 

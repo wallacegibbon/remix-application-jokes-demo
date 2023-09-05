@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import {Outlet} from "@remix-run/react";
 
 let Index: React.FC = () => <span>test-route-folder <Outlet /></span>;
 

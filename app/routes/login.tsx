@@ -1,44 +1,44 @@
-import { ActionFunction, LinksFunction, V2_MetaFunction } from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import {ActionFunction, LinksFunction, V2_MetaFunction} from "@remix-run/node";
+import {Form, Link, useActionData, useSearchParams} from "@remix-run/react";
 import db from "~/util/db.server";
-import { bad_request } from "~/util/request.server";
+import {bad_request} from "~/util/request.server";
 import styles_url from "~/styles/login.css";
-import { create_user_session, login, register } from "~/util/session.server";
+import {create_user_session, login, register} from "~/util/session.server";
 
 export let links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles_url },
+  {rel: "stylesheet", href: styles_url},
 ];
 
 export let meta: V2_MetaFunction = () => {
   let description = "Login to submit your own jokes to Remix Jokes!";
   return [
-    { name: "description", content: description },
-    { name: "twitter:description", content: description },
-    { title: "Remix Jokes | Login" },
+    {name: "description", content: description},
+    {name: "twitter:description", content: description},
+    {title: "Remix Jokes | Login"},
   ];
 };
 
-export let action: ActionFunction = async ({ request }) => {
+export let action: ActionFunction = async ({request}) => {
   let form = await request.formData();
   let login_type = form.get("login_type");
   let password = form.get("password");
   let username = form.get("username");
   let redirect_to = validate_url(form.get("redirect_to") as string);
   if (typeof login_type !== "string" || typeof password !== "string" || typeof username !== "string")
-    return bad_request({ field_errors: null, fields: null, form_error: null });
+    return bad_request({field_errors: null, fields: null, form_error: null});
 
-  let fields = { login_type, password, username };
+  let fields = {login_type, password, username};
   let field_errors = {
     username: validate_username(username),
     password: validate_password(password),
   };
 
   if (Object.values(field_errors).some(Boolean))
-    return bad_request({ field_errors, fields, form_error: null });
+    return bad_request({field_errors, fields, form_error: null});
 
   switch (login_type) {
     case "login": {
-      let user = await login({ username, password });
+      let user = await login({username, password});
       if (!user)
         return bad_request({
           field_errors: null,
@@ -50,7 +50,7 @@ export let action: ActionFunction = async ({ request }) => {
     }
 
     case "register": {
-      let user_exists = await db.user.findFirst({ where: { username } });
+      let user_exists = await db.user.findFirst({where: {username}});
       if (user_exists)
         return bad_request({
           field_errors: null,
@@ -58,7 +58,7 @@ export let action: ActionFunction = async ({ request }) => {
           form_error: `User with username ${username} already exists`,
         });
 
-      let user = await register({ username, password });
+      let user = await register({username, password});
       if (!user)
         return bad_request({
           field_errors: null,

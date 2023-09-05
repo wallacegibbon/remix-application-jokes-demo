@@ -1,9 +1,9 @@
-import { LinksFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import {LinksFunction} from "@remix-run/node";
+import {Link} from "@remix-run/react";
 import styles_url from "~/styles/index.css";
 
 export let links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles_url },
+  {rel: "stylesheet", href: styles_url},
 ];
 
 let Index: React.FC = () => {

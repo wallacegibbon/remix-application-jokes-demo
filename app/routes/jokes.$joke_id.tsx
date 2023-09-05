@@ -1,19 +1,19 @@
-import { isRouteErrorResponse, useLoaderData, useParams, useRouteError } from "@remix-run/react";
-import { ActionFunction, json, LoaderFunction, redirect, V2_MetaFunction } from "@remix-run/node";
-import { Joke } from "@prisma/client";
+import {isRouteErrorResponse, useLoaderData, useParams, useRouteError} from "@remix-run/react";
+import {ActionFunction, json, LoaderFunction, redirect, V2_MetaFunction} from "@remix-run/node";
+import {Joke} from "@prisma/client";
 import db from "~/util/db.server";
-import { get_user_id, require_user_id } from "~/util/session.server";
-import { JokeDisplay } from "~/components/joke";
+import {get_user_id, require_user_id} from "~/util/session.server";
+import {JokeDisplay} from "~/components/joke";
 
-export let meta: V2_MetaFunction = ({ data }) => {
-  let { description, title } = data
-    ? { description: `Enjoy the "${data.joke.name}" joke and much more`, title: `"${data.joke.name}" joke` }
-    : { description: "No joke found", title: "No joke" };
+export let meta: V2_MetaFunction = ({data}) => {
+  let {description, title} = data
+    ? {description: `Enjoy the "${data.joke.name}" joke and much more`, title: `"${data.joke.name}" joke`}
+    : {description: "No joke found", title: "No joke"};
 
   return [
-    { name: "description", content: description },
-    { name: "twitter:description", content: description },
-    { title },
+    {name: "description", content: description},
+    {name: "twitter:description", content: description},
+    {title},
   ];
 };
 
@@ -22,11 +22,11 @@ type LoaderData = {
   is_owner: boolean,
 };
 
-export let loader: LoaderFunction = async ({ params, request }) => {
+export let loader: LoaderFunction = async ({params, request}) => {
   let user_id = await get_user_id(request);
-  let joke = await db.joke.findUnique({ where: { id: params.joke_id } });
+  let joke = await db.joke.findUnique({where: {id: params.joke_id}});
   if (!joke)
-    throw new Response("joke is not found", { status: 400 });
+    throw new Response("joke is not found", {status: 400});
 
   return json<LoaderData>({
     joke,
@@ -34,21 +34,21 @@ export let loader: LoaderFunction = async ({ params, request }) => {
   });
 };
 
-export let action: ActionFunction = async ({ params, request }) => {
+export let action: ActionFunction = async ({params, request}) => {
   let form = await request.formData();
   let intent = form.get("intent");
   if (intent !== "delete")
-    throw new Response(`The intent ${intent} is not supported`, { status: 404 });
+    throw new Response(`The intent ${intent} is not supported`, {status: 404});
 
   let user_id = await require_user_id(request);
-  let joke = await db.joke.findUnique({ where: { id: params.joke_id } });
+  let joke = await db.joke.findUnique({where: {id: params.joke_id}});
   if (!joke)
-    throw new Response("Can't delete what does not exist", { status: 404 });
+    throw new Response("Can't delete what does not exist", {status: 404});
 
   if (joke.jokester_id !== user_id)
-    throw new Response("Pssh, nice try. That's not your joke", { status: 403 });
+    throw new Response("Pssh, nice try. That's not your joke", {status: 403});
 
-  await db.joke.delete({ where: { id: params.joke_id } });
+  await db.joke.delete({where: {id: params.joke_id}});
   return redirect("/jokes");
 };
 
@@ -60,7 +60,7 @@ let JokeIdRoute: React.FC = () => {
 export default JokeIdRoute;
 
 export let ErrorBoundary = () => {
-  let { joke_id } = useParams();
+  let {joke_id} = useParams();
   let error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
