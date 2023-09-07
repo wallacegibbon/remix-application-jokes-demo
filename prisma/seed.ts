@@ -1,6 +1,6 @@
-import {PrismaClient} from "@prisma/client";
+import {PrismaClient} from "@prisma/client"
 
-let db = new PrismaClient();
+let db = new PrismaClient()
 
 let get_jokes = () => [
   {
@@ -31,7 +31,7 @@ let get_jokes = () => [
     name: "Elevator",
     content: `My first time using an elevator was an uplifting experience. The second time let me down.`,
   },
-];
+]
 
 let seed = async () => {
   let kody = await db.user.create({
@@ -40,11 +40,11 @@ let seed = async () => {
       /// this is a hashed version of "twixrox"
       password_hash: "$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u",
     },
-  });
+  })
   await Promise.all(get_jokes().map((joke) => {
-    let data = {jokester_id: kody.id, ...joke};
-    return db.joke.create({data});
-  }));
+    let data = {jokester_id: kody.id, ...joke}
+    return db.joke.create({data})
+  }))
 }
 
-seed().catch(console.error);
+seed().catch(console.error)

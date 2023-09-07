@@ -1,11 +1,11 @@
-import {Joke} from "@prisma/client";
-import {Form, Link} from "@remix-run/react";
+import {Joke} from "@prisma/client"
+import {Form, Link} from "@remix-run/react"
 
 type JokeDisplayProps = {
   joke: Pick<Joke, "content" | "name">,
   is_owner: boolean,
   can_delete?: boolean,
-};
+}
 
 export let JokeDisplay: React.FC<JokeDisplayProps> = ({joke, is_owner, can_delete = true}) => (
   <div>
@@ -20,4 +20,4 @@ export let JokeDisplay: React.FC<JokeDisplayProps> = ({joke, is_owner, can_delet
       </Form>
     )}
   </div>
-);
+)

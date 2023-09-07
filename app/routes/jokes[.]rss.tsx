@@ -1,20 +1,19 @@
-import {LoaderFunction} from "@remix-run/node";
-import db from "~/util/db.server";
+import {LoaderFunction} from "@remix-run/node"
+import db from "~/util/db.server"
 
 export let loader: LoaderFunction = async ({request}) => {
   let jokes = await db.joke.findMany({
     include: {jokester: {select: {username: true}}},
     orderBy: {created_at: "desc"},
     take: 100,
-  });
-
-  let host = request.headers.get("X-Forwarded-Host") ?? request.headers.get("host");
-  if (!host)
-    throw new Error("Could not determine domain URL.");
-
-  let protocol = host.includes("localhost") ? "http" : "https";
-  let domain = `${protocol}://${host}`;
-  let jokes_url = `${domain}/jokes`;
+  })
+  let host = request.headers.get("X-Forwarded-Host") ?? request.headers.get("host")
+  if (!host) {
+    throw new Error("Could not determine domain URL.")
+  }
+  let protocol = host.includes("localhost") ? "http" : "https"
+  let domain = `${protocol}://${host}`
+  let jokes_url = `${domain}/jokes`
 
   let items = jokes.map((joke) => `
     <item>
@@ -25,7 +24,7 @@ export let loader: LoaderFunction = async ({request}) => {
       <link>${jokes_url}/${joke.id}</link>
       <guid>${jokes_url}/${joke.id}</guid>
     </item>
-  `.trim());
+  `.trim())
 
   let rss_string = `
     <rss xmlns:blogChannel="${jokes_url}" version="2.0">
@@ -39,7 +38,7 @@ export let loader: LoaderFunction = async ({request}) => {
         ${items}
       </channel>
     </rss>
-  `.trim();
+  `.trim()
 
   return new Response(rss_string, {
     headers: {
@@ -47,11 +46,11 @@ export let loader: LoaderFunction = async ({request}) => {
       "Content-Type": "application/xml",
       "Content-Length": String(Buffer.byteLength(rss_string)),
     },
-  });
-};
+  })
+}
 
 let escape_c_data = (s: string) =>
-  s.replace(/\]\]>/g, "]]]]><![CDATA[>");
+  s.replace(/\]\]>/g, "]]]]><![CDATA[>")
 
 let escape_html = (s: string) =>
   s
@@ -59,5 +58,5 @@ let escape_html = (s: string) =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/'/g, "&#039;")
 

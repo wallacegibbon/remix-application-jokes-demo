@@ -1,5 +1,5 @@
-import {Outlet} from "@remix-run/react";
+import {Outlet} from "@remix-run/react"
 
-let Route: React.FC = () => <span>b <Outlet /></span>;
+let Route: React.FC = () => <span>b <Outlet /></span>
 
-export default Route;
+export default Route

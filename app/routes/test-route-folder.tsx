@@ -1,5 +1,5 @@
-import {Outlet} from "@remix-run/react";
+import {Outlet} from "@remix-run/react"
 
-let Index: React.FC = () => <span>test-route-folder <Outlet /></span>;
+let Index: React.FC = () => <span>test-route-folder <Outlet /></span>
 
-export default Index;
+export default Index

@@ -1,10 +1,10 @@
-import {LinksFunction} from "@remix-run/node";
-import {Link} from "@remix-run/react";
-import styles_url from "~/styles/index.css";
+import {LinksFunction} from "@remix-run/node"
+import {Link} from "@remix-run/react"
+import styles_url from "~/styles/index.css"
 
 export let links: LinksFunction = () => [
   {rel: "stylesheet", href: styles_url},
-];
+]
 
 let Index: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ let Index: React.FC = () => {
         </nav>
       </div>
     </div>
-  );
+  )
 }
 
-export default Index;
+export default Index
