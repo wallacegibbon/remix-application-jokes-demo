@@ -1,31 +1,31 @@
-import {json, LinksFunction, LoaderFunction} from "@remix-run/node"
-import {Form, Link, Outlet, useLoaderData} from "@remix-run/react"
-import db from "~/util/db.server"
-import {get_user} from "~/util/session.server"
-import {User} from "@prisma/client"
-import styles_url from "~/styles/jokes.css"
+import {json, LinksFunction, LoaderFunction} from "@remix-run/node";
+import {Form, Link, Outlet, useLoaderData} from "@remix-run/react";
+import db from "~/util/db.server";
+import {get_user} from "~/util/session.server";
+import {User} from "@prisma/client";
+import styles_url from "~/styles/jokes.css";
 
 export let links: LinksFunction = () => {
-  return [{rel: "stylesheet", href: styles_url}]
-}
+  return [{rel: "stylesheet", href: styles_url}];
+};
 
 type LoaderData = {
-  joke_list_items: Array<{id: string, name: string}>,
+  joke_list_items: Array<{id: string, name: string;}>,
   user: Pick<User, "username" | "id"> | null,
-}
+};
 
 export let loader: LoaderFunction = async ({request}) => {
   let joke_list_items = await db.joke.findMany({
     orderBy: {created_at: "desc"},
     select: {id: true, name: true},
     take: 10,
-  })
-  let user = await get_user(request)
-  return json<LoaderData>({joke_list_items, user})
-}
+  });
+  let user = await get_user(request);
+  return json<LoaderData>({joke_list_items, user});
+};
 
 let JokesRoute: React.FC = () => {
-  let data = useLoaderData<LoaderData>()
+  let data = useLoaderData<LoaderData>();
   return (
     <div className="jokes-layout">
       <header className="jokes-header">
@@ -73,7 +73,7 @@ let JokesRoute: React.FC = () => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default JokesRoute
+export default JokesRoute;
